@@ -28,6 +28,7 @@ import { loginAs, logout, resetDemo } from '../services/auth';
 import { markAllRead, markRead } from '../services/notifications';
 import { DEMO_IDS } from '../data/seed';
 import { ErrorBoundary } from './ErrorBoundary';
+import { AssistantWidget } from './AssistantWidget';
 import { isSupabaseConfigured, useSync } from '../services/sync';
 import { Avatar } from './visuals';
 import { dashboardPath, useNotificationText } from './hooks';
@@ -385,6 +386,7 @@ export function Layout() {
       </footer>
       <BottomNav />
       <Toaster />
+      <AssistantWidget />
     </div>
   );
 }

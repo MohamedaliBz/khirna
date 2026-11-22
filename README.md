@@ -64,6 +64,21 @@ Le point de couleur dans l'en-tête indique l'état : vert = base connectée, gr
 
 ⚠ Prototype : la clé publique donne accès en lecture/écriture à toutes les tables. Ne jamais y mettre de vraies données.
 
+## Assistant IA (chatbot)
+
+Une bulle en bas à droite ouvre l'assistant KHIRNA : questions en français, arabe ou derja, réponses générées à partir des documents KHIRNA (backend FastAPI + RAG + Groq, dossier `assistant/khirna-ai-assistant`). Sans backend lancé, la bulle affiche « hors ligne » et le reste de l'app fonctionne normalement.
+
+```powershell
+cd "C:\Users\moham\OneDrive\Bureau\liltech3.0\assistant\khirna-ai-assistant"
+py -3.12 -m venv .venv                                         # une seule fois
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt  # une seule fois
+.\.venv\Scripts\python.exe run.py                              # http://127.0.0.1:8000
+```
+
+- La clé Groq reste dans `assistant/khirna-ai-assistant/.env` (jamais dans le site).
+- `CORS_ORIGINS` de ce `.env` doit contenir l'adresse du site (ex. `http://localhost:5173`).
+- L'URL du backend côté site se règle avec `VITE_ASSISTANT_URL` dans `.env.local`.
+
 ## Stack
 
 React 18 · Vite 5 · TypeScript · Tailwind CSS 3 · React Router 6 · Zustand (persist → localStorage) · Supabase (optionnel) · Leaflet + OpenStreetMap · vite-plugin-pwa · lucide-react · police Cairo.

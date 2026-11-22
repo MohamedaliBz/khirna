@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KHIRNA Assistant - Test</title>
+  <style>
+    :root {
+      --green: #1f5d3a;
+      --olive: #6b8e23;
+      --gold: #d4a537;
+      --cream: #faf7ef;
+      --ink: #1c2b22;
+      --line: #dfe6df;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% 15%, rgba(212, 165, 55, .12), transparent 24rem),
+        var(--cream);
+    }
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      height: calc(100vh - 32px);
+      margin: 16px auto;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: white;
+      box-shadow: 0 18px 50px rgba(31, 93, 58, .12);
+    }
+    aside {
+      padding: 24px;
+      background: var(--green);
+      color: white;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: grid; place-items: center;
+      background: var(--gold); color: var(--green); font-weight: 800;
+    }
+    aside h1 { margin: 0; font-size: 21px; }
+    aside p { color: rgba(255,255,255,.75); line-height: 1.5; }
+    .field { margin-top: 18px; }
+    label { display: block; margin-bottom: 7px; font-size: 13px; font-weight: 700; }
+    select, input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: white;
+      color: var(--ink);
+      padding: 11px 12px;
+      font: inherit;
+    }
+    aside select { border: 0; }
+    .clear-button {
+      width: 100%;
+      margin-top: 20px;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 10px;
+      padding: 11px;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+    }
+    main { min-width: 0; display: grid; grid-template-rows: auto 1fr auto; }
+    header {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .status { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #607067; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #42a167; }
+    #messages {
+      overflow-y: auto;
+      padding: 24px;
+      scroll-behavior: smooth;
+    }
+    .message {
+      max-width: 78%;
+      margin-bottom: 14px;
+      padding: 13px 15px;
+      border-radius: 16px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .message.user {
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+      background: var(--green);
+      color: white;
+    }
+    .message.assistant {
+      border: 1px solid var(--line);
+      border-bottom-left-radius: 4px;
+      background: #f8faf8;
+    }
+    .message.error { border-color: #dc8a80; background: #fff4f1; color: #8a3529; }
+    .sources { margin-top: 10px; display: grid; gap: 7px; }
+    .source {
+      border: 1px solid #dde6dc;
+      border-radius: 9px;
+      padding: 8px 10px;
+      background: white;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .composer {
+      display: grid;
+      grid-template-columns: 46px 1fr 46px;
+      gap: 8px;
+      padding: 14px 20px 18px;
+      border-top: 1px solid var(--line);
+    }
+    .icon-button, .send-button {
+      height: 46px;
+      border: 0;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .icon-button { background: #edf3ed; color: var(--green); }
+    .send-button { background: var(--gold); color: var(--ink); font-weight: 800; }
+    .icon-button:disabled, .send-button:disabled { opacity: .55; cursor: wait; }
+    .recording { background: #b84436; color: white; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 50% { opacity: .68; } }
+    [dir="rtl"] .composer { direction: rtl; }
+    [dir="rtl"] .message.user { margin-right: auto; margin-left: 0; }
+    [dir="rtl"] .message.assistant { margin-right: 0; margin-left: auto; }
+    @media (max-width: 760px) {
+      .shell { width: 100%; height: 100vh; margin: 0; grid-template-columns: 1fr; border-radius: 0; }
+      aside { display: none; }
+      .message { max-width: 88%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">
+        <div class="brand-mark">K</div>
+        <div>
+          <h1>KHIRNA Assistant</h1>
+          <p>Interface de test locale</p>
+        </div>
+      </div>
+      <div class="field">
+        <label for="role">Rôle utilisateur</label>
+        <select id="role">
+          <option value="visitor">Visiteur</option>
+          <option value="citizen">Citoyen investisseur</option>
+          <option value="farmer_t1">Agriculteur type 1</option>
+          <option value="farmer_t2">Agriculteur type 2</option>
+          <option value="state_agent">Agent de l'État</option>
+          <option value="admin">Administrateur</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="language">Langue</label>
+        <select id="language">
+          <option value="fr">Français</option>
+          <option value="ar">Arabe</option>
+          <option value="tn">Arabe tunisien</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="session">Session</label>
+        <input id="session" value="demo-test" spellcheck="false">
+      </div>
+      <button class="clear-button" id="clear">Effacer la conversation</button>
+    </aside>
+    <main>
+      <header>
+        <div>
+          <strong>Assistant KHIRNA</strong>
+          <div class="status"><span class="status-dot"></span><span id="status">Vérification...</span></div>
+        </div>
+        <button class="icon-button" id="speakLast" title="Lire la dernière réponse" aria-label="Lire la dernière réponse">S</button>
+      </header>
+      <div id="messages" aria-live="polite"></div>
+      <form class="composer" id="composer">
+        <button type="button" class="icon-button" id="microphone" title="Dicter">M</button>
+        <input id="message" autocomplete="off" placeholder="Posez une question sur KHIRNA..." aria-label="Votre message">
+        <button type="submit" class="send-button" id="send">↑</button>
+      </form>
+    </main>
+  </div>
+  <script>
+    const role = document.querySelector("#role");
+    const language = document.querySelector("#language");
+    const session = document.querySelector("#session");
+    const messageInput = document.querySelector("#message");
+    const messages = document.querySelector("#messages");
+    const sendButton = document.querySelector("#send");
+    const clearButton = document.querySelector("#clear");
+    const microphone = document.querySelector("#microphone");
+    const speakLast = document.querySelector("#speakLast");
+    let lastAnswer = "";
+    let recognition = null;
+
+    function setStatus(text) {
+      document.querySelector("#status").textContent = text;
+    }
+
+    function addMessage(text, kind, sources = []) {
+      const element = document.createElement("div");
+      element.className = `message ${kind}`;
+      element.textContent = text;
+      if (sources.length) {
+        const list = document.createElement("div");
+        list.className = "sources";
+        for (const source of sources) {
+          const card = document.createElement("div");
+          card.className = "source";
+          card.textContent = `${source.filename} — ${source.section} (${Math.round(source.score * 100)}%)`;
+          list.appendChild(card);
+        }
+        element.appendChild(list);
+      }
+      messages.appendChild(element);
+      messages.scrollTop = messages.scrollHeight;
+      return element;
+    }
+
+    async function checkHealth() {
+      try {
+        const response = await fetch("/api/health");
+        if (!response.ok) throw new Error("API indisponible");
+        const health = await response.json();
+        setStatus(health.groq_configured ? "Groq actif" : "Mode RAG local");
+      } catch (error) {
+        setStatus("API indisponible");
+      }
+    }
+
+    async function sendMessage() {
+      const message = messageInput.value.trim();
+      if (!message) return;
+      addMessage(message, "user");
+      messageInput.value = "";
+      sendButton.disabled = true;
+      messageInput.disabled = true;
+      const loading = addMessage("Réflexion en cours...", "assistant");
+
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: session.value.trim() || "demo-test",
+            message,
+            language: language.value,
+            user_role: role.value
+          })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail?.[0]?.msg || "Erreur API");
+        loading.remove();
+        lastAnswer = data.answer;
+        addMessage(data.answer, "assistant", data.sources || []);
+        setStatus(data.provider === "groq" ? "Réponse Groq" : "Mode RAG local");
+      } catch (error) {
+        loading.className = "message error";
+        loading.textContent = error.message;
+      } finally {
+        sendButton.disabled = false;
+        messageInput.disabled = false;
+        messageInput.focus();
+      }
+    }
+
+    document.querySelector("#composer").addEventListener("submit", event => {
+      event.preventDefault();
+      sendMessage();
+    });
+
+    clearButton.addEventListener("click", async () => {
+      const sessionId = session.value.trim() || "demo-test";
+      await fetch(`/api/conversations/${encodeURIComponent(sessionId)}`, { method: "DELETE" }).catch(() => {});
+      messages.replaceChildren();
+      lastAnswer = "";
+    });
+
+    language.addEventListener("change", () => {
+      const rtl = language.value === "ar" || language.value === "tn";
+      document.documentElement.dir = rtl ? "rtl" : "ltr";
+      document.documentElement.lang = language.value === "ar" ? "ar" : language.value === "tn" ? "aeb" : "fr";
+      messageInput.placeholder = rtl ? "اكتب سؤالًا عن KHIRNA..." : "Posez une question sur KHIRNA...";
+    });
+
+    speakLast.addEventListener("click", () => {
+      if (!lastAnswer || !("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(lastAnswer);
+      utterance.lang = language.value === "ar" || language.value === "tn" ? "ar-TN" : "fr-FR";
+      window.speechSynthesis.speak(utterance);
+    });
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.onstart = () => {
+        microphone.classList.add("recording");
+        setStatus("Écoute...");
+      };
+      recognition.onend = () => {
+        microphone.classList.remove("recording");
+        checkHealth();
+      };
+      recognition.onresult = event => {
+        messageInput.value = event.results[0][0].transcript;
+        messageInput.focus();
+      };
+      recognition.onerror = () => setStatus("Microphone indisponible");
+      microphone.addEventListener("click", () => {
+        recognition.lang = language.value === "ar" || language.value === "tn" ? "ar-TN" : "fr-FR";
+        recognition.start();
+      });
+    } else {
+      microphone.disabled = true;
+      microphone.title = "Reconnaissance vocale non disponible";
+    }
+
+    checkHealth();
+  </script>
+</body>
+</html>
