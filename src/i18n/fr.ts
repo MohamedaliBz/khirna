@@ -51,6 +51,11 @@ export const fr = {
     wrongRole: 'Cet espace est réservé à un autre rôle. Changez de compte démo dans le menu.',
     goLogin: 'Aller à la connexion',
     stateOwned: 'Terre de l’État',
+    syncOnline: 'Base Supabase connectée',
+    syncLocal: 'Mode local (navigateur)',
+    syncConnecting: 'Connexion à la base…',
+    syncError: 'Base injoignable : mode local',
+    resetConfirmOnline: 'Restaurer toutes les données de démonstration dans la base partagée ? Les actions effectuées seront effacées sur TOUS les appareils.',
   },
   nav: {
     home: 'Accueil',

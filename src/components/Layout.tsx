@@ -28,6 +28,7 @@ import { loginAs, logout, resetDemo } from '../services/auth';
 import { markAllRead, markRead } from '../services/notifications';
 import { DEMO_IDS } from '../data/seed';
 import { ErrorBoundary } from './ErrorBoundary';
+import { isSupabaseConfigured, useSync } from '../services/sync';
 import { Avatar } from './visuals';
 import { dashboardPath, useNotificationText } from './hooks';
 import type { Role, User } from '../types';
@@ -57,6 +58,24 @@ function useClickOutside(open: boolean, close: () => void) {
     return () => document.removeEventListener('mousedown', onDown);
   }, [open, close]);
   return ref;
+}
+
+function SyncIndicator() {
+  const { t } = useI18n();
+  const status = useSync((s) => s.status);
+  const error = useSync((s) => s.error);
+  const map = {
+    online: { color: 'bg-emerald-500', label: t('common.syncOnline') },
+    connecting: { color: 'bg-wheat animate-pulse', label: t('common.syncConnecting') },
+    error: { color: 'bg-red-500', label: t('common.syncError') },
+    local: { color: 'bg-ink/30', label: t('common.syncLocal') },
+  }[status];
+  return (
+    <span className="flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-semibold text-ink-muted" title={error ? `${map.label} · ${error}` : map.label}>
+      <span className={`h-2 w-2 rounded-full ${map.color}`} />
+      <span className="hidden xl:inline">{map.label}</span>
+    </span>
+  );
 }
 
 function LangToggle() {
@@ -194,7 +213,7 @@ function AccountMenu() {
             <button
               className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-wheat-dark hover:bg-wheat-50"
               onClick={() => {
-                if (window.confirm(t('common.resetConfirm'))) {
+                if (window.confirm(t(isSupabaseConfigured ? 'common.resetConfirmOnline' : 'common.resetConfirm'))) {
                   resetDemo();
                   setOpen(false);
                   toast(t('common.resetDone'), 'info');
@@ -264,6 +283,7 @@ function Header() {
           ))}
         </nav>
         <div className="ms-auto flex items-center gap-1">
+          <SyncIndicator />
           <LangToggle />
           <NotificationBell />
           <AccountMenu />

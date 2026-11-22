@@ -51,9 +51,22 @@ npm run preview -- --host    # ouvrir l'URL "Network" sur un téléphone connect
 
 Sur téléphone : ouvrir l'URL puis « Ajouter à l'écran d'accueil » (PWA installable).
 
+## Base de données Supabase (optionnelle)
+
+Sans configuration, l'app tourne **en local** (données dans le navigateur). Pour partager les données entre tous les appareils (téléphones du jury + ordinateur) :
+
+1. Créer un projet sur [supabase.com](https://supabase.com).
+2. **SQL Editor** → coller le contenu de `supabase/schema.sql` → **Run** (crée les 12 tables, les accès et le temps réel).
+3. Copier `.env.example` en `.env.local` et y mettre l'URL du projet et la clé publique `anon` (Project Settings → API).
+4. Relancer `npm run dev` (ou `npm run build`). Au premier lancement, les données de démo sont envoyées automatiquement dans la base.
+
+Le point de couleur dans l'en-tête indique l'état : vert = base connectée, gris = mode local, rouge = base injoignable (l'app continue en local). « Réinitialiser la démo » remet alors la base partagée à zéro pour tous les appareils.
+
+⚠ Prototype : la clé publique donne accès en lecture/écriture à toutes les tables. Ne jamais y mettre de vraies données.
+
 ## Stack
 
-React 18 · Vite 5 · TypeScript · Tailwind CSS 3 · React Router 6 · Zustand (persist → localStorage) · Leaflet + OpenStreetMap · vite-plugin-pwa · lucide-react · police Cairo.
+React 18 · Vite 5 · TypeScript · Tailwind CSS 3 · React Router 6 · Zustand (persist → localStorage) · Supabase (optionnel) · Leaflet + OpenStreetMap · vite-plugin-pwa · lucide-react · police Cairo.
 
 ## Organisation du code
 
