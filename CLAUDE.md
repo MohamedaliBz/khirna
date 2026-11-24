@@ -15,7 +15,7 @@ Principes clés : fonds sous **séquestre**, **déblocage par tranches** après 
 ## Contraintes techniques
 - React + Vite + TypeScript + Tailwind, **PWA responsive** (ordinateur + téléphone).
 - **Arabe (RTL) + français**, bascule en un clic, aucun texte en dur.
-- **Données simulées** dans le navigateur (Zustand + localStorage + seed), pas de backend ni de compte cloud.
+- **Données** : base **Supabase** partagée entre appareils (tables `id + data jsonb`, temps réel, schéma dans `supabase/schema.sql`) quand `.env.local` est rempli ; sinon repli automatique en local (Zustand + localStorage + seed). Le store reste le cache lu par les écrans ; `src/services/sync.ts` synchronise. Paiements toujours simulés.
 - Windows / PowerShell. Dossier sous OneDrive.
 - Priorité absolue : le **scénario de démo** doit marcher sans bug. `npm run build` doit passer.
 

@@ -1,81 +1,121 @@
-# KHIRNA · خيرنا
+# KHIRNA | خيرنا 🌱
 
-> « نستثمروا في أرضنا، ونكبروا بخيرنا » — *Investissons dans notre terre, grandissons avec ses fruits*
+> **« نستثمروا في أرضنا، ونكبروا بخيرنا »**  
+> *Investissons dans notre terre, grandissons avec ses fruits.*
 
-Prototype de plateforme tunisienne d'**investissement participatif agricole** (hackathon).
-Des citoyens financent des projets agricoles réels dès 100 DT, suivent leur avancement (photos datées, étapes, dépenses), demandent des visites et reçoivent une part des bénéfices. L'**État** met à disposition des terres domaniales (il en reste propriétaire) et co-investit avec des agriculteurs sans terre.
+**KHIRNA** is a Tunisian agricultural crowdfunding platform prototype developed during a hackathon.
 
-**Tout est simulé** : aucun paiement réel, aucune donnée envoyée à un serveur. Les données vivent dans le navigateur (localStorage).
+It connects citizens, farmers, and public institutions through a collaborative investment ecosystem, enabling citizens to support agricultural projects, monitor their progress, and track potential returns.
 
-## Principes visibles dans l'interface
+The platform also explores public-private partnerships by facilitating access to state-owned agricultural land while preserving public ownership.
 
-- **Séquestre** : l'argent investi reste bloqué sur le projet.
-- **Déblocage par tranches** : chaque tranche n'est versée à l'agriculteur qu'après validation de l'étape (preuve photo) par l'admin.
-- **Clé de répartition** du bénéfice net affichée sur chaque projet (anneau SVG).
-- **Aucun rendement garanti** : bandeau de risque sur chaque fiche.
-- **Terre de l'État** : badge « mise à disposition jusqu'au … », jamais un actif du projet.
+## 🚀 Key Features
 
-## Comptes de démonstration (connexion en un clic)
+- **Investors:** Discover agricultural projects, simulate investments, and track portfolios.
+- **Farmers:** Publish projects, manage funding, and share progress updates.
+- **Public Institutions:** Manage agricultural land opportunities and co-investment scenarios.
+- **Administrators:** Validate projects, milestones, and harvest declarations.
+- **AI Assistant:** Conversational support in French, Arabic, and Tunisian Derja.
+- **Interactive Experience:** Dashboards, maps, notifications, and bilingual interface (FR/AR).
 
-| Compte | Rôle |
+## ⚙️ Technology Stack
+
+| Category | Technologies |
 |---|---|
-| Amine Ben Salah | Citoyen investisseur (portefeuille simulé 5 000 DT, 2 investissements) |
-| Hédi Trabelsi | Agriculteur type 1 (Béja, vaches laitières + fourrage) |
-| Salma Gharbi | Agriculteur type 2 (Siliana, sans terre, projet tripartite avec l'État) |
-| Ministère des Domaines de l'État – agent régional | Agent de l'État |
-| Admin KHIRNA | Administrateur |
+| Frontend | React 18, TypeScript, Vite |
+| Styling | Tailwind CSS |
+| State Management | Zustand |
+| Routing | React Router |
+| Database | Supabase (Optional) |
+| Maps | Leaflet, OpenStreetMap |
+| PWA | vite-plugin-pwa |
+| AI Backend | Python, FastAPI, RAG, Groq |
 
-Le menu du compte (avatar en haut à droite) permet de **basculer d'un compte à l'autre** et de **réinitialiser la démo**.
+## 🛠️ Getting Started
 
-## Scénario de démo (3 minutes)
+### Prerequisites
+- Node.js 18+
+- npm
+- Git
 
-1. **Accueil → Découvrir les projets → « 10 vaches laitières – Béja » → Investir** → entrer en tant qu'Amine → 500 DT → cocher « J'ai compris les risques » → confirmer → écran de succès → **Voir mon tableau de bord** (le solde passe à 4 500 DT).
-2. Retour sur la fiche → **Demander une visite** → envoyer. Menu → **Hédi** → *Demandes de visite* : **Confirmer** → **Publier une actualité** (type *Preuve d'étape*, projet « Luzerne et avoine », texte + photo d'exemple) → Envoyer.
-3. Menu → **Admin** → onglet *Preuves d'étape* → **Valider et débloquer 3 000 DT** → la tranche est versée à Hédi (notification dans sa cloche).
-4. Menu → **Agent de l'État** → **Publier une parcelle** (Le Kef, clic sur la carte) → sélectionner « Domaine de Nebeur – lot 3 » → **Retenir** le meilleur score → **Fixer le co-investissement**.
-5. Menu → **Admin** → onglet *Déclarations de récolte* → « Oliveraie – Kasserine » → **Valider et distribuer** → menu → **Amine** : *Gains reçus* ≈ 338 DT (+1 500 DT de capital restitué).
-6. À tout moment : bouton **العربية / Français** dans l'en-tête → toute l'interface passe en arabe (RTL).
+### Installation
 
-En cas de besoin : menu → **Réinitialiser la démo** restaure toutes les données.
+```bash
+# Clone the repository
+git clone <YOUR_REPOSITORY_URL>
 
-## Commandes (Windows / PowerShell)
+# Navigate to the project
+cd <PROJECT_DIRECTORY>
 
-```powershell
-cd "C:\Users\moham\OneDrive\Bureau\liltech3.0"
-node -v                      # Node 18 ou plus requis
+# Install dependencies
 npm install
-npm run dev                  # http://localhost:5173
-npm run build                # vérification TypeScript + build de production (dist/)
-npm run preview -- --host    # ouvrir l'URL "Network" sur un téléphone connecté au même Wi-Fi
+
+# Start development server
+npm run dev
+```
+### Production Build
+
+```bash
+npm run build
+npm run preview
 ```
 
-Sur téléphone : ouvrir l'URL puis « Ajouter à l'écran d'accueil » (PWA installable).
+## 🗄️ Database Configuration (Optional)
 
-## Stack
+KHIRNA works locally by default using browser `localStorage`.
 
-React 18 · Vite 5 · TypeScript · Tailwind CSS 3 · React Router 6 · Zustand (persist → localStorage) · Leaflet + OpenStreetMap · vite-plugin-pwa · lucide-react · police Cairo.
+To enable Supabase:
 
-## Organisation du code
+1. Create a project on [Supabase](https://supabase.com/).
+2. Execute `supabase/schema.sql` in the SQL Editor.
+3. Configure the required environment variables in `.env.local`, following `.env.example`.
+4. Restart the development server.
 
+## 🤖 AI Assistant
+
+The project includes a separate FastAPI backend using RAG and Groq for document-based conversational assistance.
+
+Backend source:
+
+```text
+assistant/khirna-ai-assistant/
 ```
-src/
-  types.ts            Modèle de données (User, Project, Milestone, Investment, Escrow, …)
-  data/seed.ts        Données de démo (10 projets, 4 parcelles, investissements, actualités…)
-  store/              Store Zustand persistant (= backend simulé) + sélecteurs dérivés
-  services/           Toute la logique métier (investir, débloquer une tranche, distribuer,
-                      candidatures, visites…) — à remplacer plus tard par des appels API
-  i18n/               fr.ts / ar.ts (clés typées : une clé manquante = erreur de compilation)
-  components/         ProjectCard, ProgressBar, MilestoneTimeline, SplitDonut, MapView, StatCard…
-  pages/              Accueil, Connexion, Catalogue, Fiche, Investir, tableaux de bord,
-                      Assistant de création, Terres de l'État, Espace État, Admin, Notifications
+
+Configure the backend environment variables locally before running the service.
+
+## 📂 Project Structure
+
+```text
+KHIRNA/
+├── public/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── services/
+│   ├── store/
+│   ├── data/
+│   └── i18n/
+├── assistant/
+│   └── khirna-ai-assistant/
+├── supabase/
+│   └── schema.sql
+├── .env.example
+├── package.json
+└── README.md
 ```
 
-### Règles métier implémentées
+## 🔐 Security & Disclaimer
 
-- Projet : `draft → submitted → (needs_changes) → funding → funded → in_progress → harvest → distributed` (+ `rejected`) ; passage automatique en `funded` à 100 %.
-- Un investissement ne dépasse ni le solde ni le reste à financer ; il va au séquestre du projet.
-- Valider une preuve d'étape débloque la tranche (séquestre ↓, portefeuille agriculteur ↑).
-- Distribution : bénéfice net = CA − coûts ; capital restitué, puis part investisseurs répartie au prorata des montants (État compris) ; parts agriculteur, KHIRNA et réserve selon la clé.
-- Valider un projet sur terre de l'État verse automatiquement le co-investissement public au séquestre.
+> **KHIRNA is a hackathon prototype, not a production-ready financial platform.**
 
-Photos : Unsplash (libres de droits). Cartes : © OpenStreetMap.
+- No real financial transactions are processed.
+- Demonstration data is fictional.
+- Never commit API keys, credentials, or private environment files.
+- Supabase requires proper authentication, authorization, and Row Level Security (RLS) before handling real user data.
+- Financial operations are simulated and require backend validation for production use.
+
+## 📌 Project Status
+
+**Status:** Hackathon Prototype · Under Development
+
+**Built with 🌱 for the future of Tunisian agriculture.**

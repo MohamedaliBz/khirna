@@ -2,3 +2,9 @@ node_modules
 dist
 dev-dist
 *.local
+
+# Assistant IA (Python)
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
